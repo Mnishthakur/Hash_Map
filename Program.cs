@@ -1,24 +1,24 @@
 namespace HashTable;
 
-class Program
-{
-    static void Main(string[] args)
+    class Program
     {
-        Console.WriteLine("Hash table");
+        static void Main(string[] args)
+        {
+            string paragraph = "Paranoids are not paranoid because they are paranoid but because they keep putting themselves deliberately into paranoid avoidable situations";
+            string[] words = paragraph.Split(' ');
 
-        MyMapNode<string, string> hash = new MyMapNode<string, string>(5);
-        hash.Add("0", "To");
-        hash.Add("1", "Be");
-        hash.Add("2", "or");
-        hash.Add("3", "not");
-        hash.Add("4", "to");
-        hash.Add("5", "be");
+            MyMapNode<string, int> hash = new MyMapNode<string, int>(words.Length);
+            foreach (string word in words)
+            {
+                hash.Add(word);
+            }
 
-        string hash5 = hash.Get("5");
-        Console.WriteLine("5th Index value;" + hash5);
-
-        string hash2 = hash.Get("2");
-        Console.WriteLine("2th index value:" + hash2);
-
+            Console.WriteLine("Frequency of words in the paragraph:");
+            foreach (string word in words)
+            {
+                int frequency = hash.GetFrequency(word);
+                Console.WriteLine($"{word}: {frequency}");
+            }
+        }
     }
 }
