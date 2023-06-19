@@ -1,6 +1,4 @@
-namespace HashTable;
-
-    class Program
+class Program
     {
         static void Main(string[] args)
         {
@@ -8,12 +6,23 @@ namespace HashTable;
             string[] words = paragraph.Split(' ');
 
             MyMapNode<string, int> hash = new MyMapNode<string, int>(words.Length);
+
             foreach (string word in words)
             {
                 hash.Add(word);
             }
 
             Console.WriteLine("Frequency of words in the paragraph:");
+            foreach (string word in words)
+            {
+                int frequency = hash.GetFrequency(word);
+                Console.WriteLine($"{word}: {frequency}");
+            }
+
+            string wordToRemove = "avoidable";
+            hash.Remove(wordToRemove);
+
+            Console.WriteLine($"\nAfter removing the word '{wordToRemove}':");
             foreach (string word in words)
             {
                 int frequency = hash.GetFrequency(word);
