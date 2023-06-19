@@ -36,6 +36,17 @@ namespace HashTable
             }
         }
 
+        public void Remove(K key)
+        {
+            int position = GetArrayPosition(key);
+            LinkedList<KeyValue<K, int>> linkedlist = GetLinkedList(position);
+            KeyValue<K, int> item = FindItem(linkedlist, key);
+            if (item != null)
+            {
+                linkedlist.Remove(item);
+            }
+        }
+
         public int GetFrequency(K key)
         {
             int position = GetArrayPosition(key);
@@ -73,4 +84,3 @@ namespace HashTable
             public V Value { get; set; }
         }
     }
-
