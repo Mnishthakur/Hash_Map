@@ -20,58 +20,51 @@ namespace HashTable
             return Math.Abs(position);
         }
 
-        public V Get(K key)
+        public void Add(K key)
         {
             int position = GetArrayPosition(key);
-            LinkedList<KeyValue<K, V>> linkedlist = GetLinkedList(position);
-            foreach (KeyValue<K, V> item in linkedlist)
+            LinkedList<KeyValue<K, int>> linkedlist = GetLinkedList(position);
+            KeyValue<K, int> item = FindItem(linkedlist, key);
+            if (item != null)
             {
-                if (item.Key.Equals(key))
-                {
-                    return item.Value;
-                }
+                item.Value++;
             }
-            return default(V);
-        }
-
-        public void Add(K key, V value)
-        {
-            int position = GetArrayPosition(key);
-            LinkedList<KeyValue<K, V>> linkedlist = GetLinkedList(position);
-            KeyValue<K, V> item = new KeyValue<K, V>() { Key = key, Value = value };
-            linkedlist.AddLast(item);
-        }
-
-        public void Remove(K key)
-        {
-            int position = GetArrayPosition(key);
-            LinkedList<KeyValue<K, V>> linkedlist = GetLinkedList(position);
-            bool itemFound = false;
-            KeyValue<K, V> founditem = default(KeyValue<K, V>);
-            foreach (KeyValue<K, V> item in linkedlist)
+            else
             {
-                if (item.Key.Equals(key))
-                {
-                    itemFound = true;
-                    founditem = item;
-                    break;
-                }
-            }
-            if (itemFound)
-            {
-                linkedlist.Remove(founditem);
+                item = new KeyValue<K, int>() { Key = key, Value = 1 };
+                linkedlist.AddLast(item);
             }
         }
 
-        protected LinkedList<KeyValue<K, V>> GetLinkedList(int position)
+        public int GetFrequency(K key)
         {
-            LinkedList<KeyValue<K, V>> linkedlist = items[position];
+            int position = GetArrayPosition(key);
+            LinkedList<KeyValue<K, int>> linkedlist = GetLinkedList(position);
+            KeyValue<K, int> item = FindItem(linkedlist, key);
+            return item != null ? item.Value : 0;
+        }
+
+        protected LinkedList<KeyValue<K, int>> GetLinkedList(int position)
+        {
+            LinkedList<KeyValue<K, int>> linkedlist = items[position];
             if (linkedlist == null)
             {
-                linkedlist = new LinkedList<KeyValue<K, V>>();
+                linkedlist = new LinkedList<KeyValue<K, int>>();
                 items[position] = linkedlist;
             }
             return linkedlist;
+        }
+
+        protected KeyValue<K, int> FindItem(LinkedList<KeyValue<K, int>> linkedlist, K key)
+        {
+            foreach (KeyValue<K, int> item in linkedlist)
+            {
+                if (item.Key.Equals(key))
+                {
+                    return item;
+                }
+            }
+            return null;
         }
 
         public struct KeyValue<K, V>
@@ -80,4 +73,4 @@ namespace HashTable
             public V Value { get; set; }
         }
     }
-}
+
